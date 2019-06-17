@@ -59,3 +59,33 @@ function writeToDocument(url) {
         el.innerHTML = `<table>${tableHeaders}${tableRows}</table>${pagination}`.replace(/,/g, "");
     });
 }
+
+queue()
+    .defer(d3.JSON, getData("https://swapi.co/api/starships", cb))
+    .await(makeGraphs);
+    
+function makeGraphs(error, starshipData) {
+    var ndx = crossfilter(starshipData);
+    
+    show_hyperdrive_rating(ndx);
+    
+    dc.renderAll();
+}
+
+function show_hyperdrive_rating(ndx) {
+    var dim = ndx.dimension(dc.pluck('hyperdrive_rating'));
+    var group = dim.group();
+    
+    dc.barChart("#hyperdrive_graph")
+        .width(400)
+        .height(300)
+        .margins({top: 10, right: 50, bottom: 30, left: 50})
+        .dimension(dim)
+        .group(group)
+        .transitionDuration(500)
+        .x(d3.scale.linear())
+        .xUnits(dc.units.linear)
+        .elasticY(true)
+        .xAxisLabel("Hyperdrive Rating")
+        .yAxis().ticks(20);
+}
