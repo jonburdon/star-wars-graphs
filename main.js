@@ -61,7 +61,7 @@ function writeToDocument(url) {
 }
 
 queue()
-    .defer(d3.JSON, getData("https://swapi.co/api/starships", cb))
+    .defer(d3.JSON, getData("https://swapi.co/api/starships"))
     .await(makeGraphs);
     
 function makeGraphs(error, starshipData) {
