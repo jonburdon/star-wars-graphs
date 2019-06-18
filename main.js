@@ -63,7 +63,7 @@ function writeToDocument(url) {
 // queue()
     // .defer(d3.csv, getData("https://swapi.co/api/starships/"))
     // .await(makeGraphs);
-    queue().defer(d3.JSON, "https://swapi.co/api/starships/").await(makeGraphs)
+    queue().defer(d3.JSON, "https://swapi.co/api/starships/?format=json").await(makeGraphs)
 
 function makeGraphs(error, starshipData) {
     var ndx = crossfilter(starshipData);
